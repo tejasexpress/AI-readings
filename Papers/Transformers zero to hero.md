@@ -35,12 +35,23 @@
 - works by seeing how similar each word is to all of the other words (maybe cosine similarity), including itself. i.e if you see a lot of sentences about pizza and the word 'it' was more commonly associated with pizza than oven, then the similarity score for pizza will have a larger impact on how the word it is encoded by the transformer
 ### Calculating Self Attention
 
+>Encode words into numbers
+>Encode positions of the words
+>Encode relationships among these words
+
 - create three vectors from each of the encoder’s input vectors So for each word, we create a <span style="color:#ffc000">Query vector</span> (what am I looking for) , a <span style="color:#ffc000">Key vector</span> (What can I offer), and a <span style="color:#ffc000">Value vector</span> (What I actually offer). These vectors are created by multiplying the embedding by three matrices that we train during the training process.
 - The **second step** in calculating self-attention is to calculate a score. Say we’re calculating the self-attention for the first word in this example, “Thinking”. We need to score each word of the input sentence against this word. The score determines how much focus to place on other parts of the input sentence as we encode a word at a certain position. The score is calculated by taking the dot product of the query vector with the key vector of the respective word we’re scoring. So if we’re processing the self-attention for the word in position #1, the first score would be the dot product of q1 and k1. The second score would be the dot product of q1 and k2. ![Pasted image 20230921011033.png](../Images/Pasted%20image%2020230921011033.png)
 - The **third and fourth steps** are to normalise the scores and pass them through a softmax function so that they turn into a probability distribution. This can be thought of as an attention filter with a value of attention for each pairs of words in an nxn matrix (n = number of words)
 - The **fifth step** is to multiply each value vector by the softmax score (in preparation to sum them up). The intuition here is to keep intact the values of the word(s) we want to focus on, and drown-out irrelevant words (by multiplying them by tiny numbers like 0.001, for example i.e multiplying words with an attention filter telling them which pairs to pay more attention to). 
-- The **sixth step** is to sum up the weighted value vectors. This produces the output of the self-attention layer at this position (for the first word).![](../Pasted%20image%2020230921160304.png)
-> Our goal at the end of the attention layer is to output a set of embeddings for each input word such that the embedding also takes into account the context of the input sentence. i.e it's interaction with the words around it and how much another word in that sentence affects the words
+- The **sixth step** is to sum up the weighted value vectors. This produces the output of the self-attention layer at this position (for the first word).![](../Images/Pasted%20image%2020230921160304.png)
+
+> Our goal at the end of the attention layer is to output a set of embeddings 
+> for each input word such that the embedding also takes into account the context of the input sentence. i.e it's interaction with the words around it and how much another word in that sentence affects the words
 > to achieve this we first calculate the attention filter ( intuition mentioned above) from here we apply the filter to the value vector, what this essentially does is, for each word we want to calculate, it is the <span style="color:#ffc000">attention weighted sum of the value vectors of all the words in the sentence</span> $$ ^{1}V_{new} = \sum_{i=0}^{words}{A_{1i}}^iV_{old}$$
 > What this basically means is that it takes the vector of every word, multiplies it by how much it affects the query word ($^1V$) and sums it up. This incorporates the relation between words of a sentence inside the new value vector. $A_{1j}$ represents the first row of the attention filter where the words corresponding to $^1V$ is the query vector and all rest words in the sentence are key vectors. we take the dot products of every key vector with the query vector, put it in a row vector of size $1 *j$ , normalize it and pass it through a soft-max giving us $A_{1j}$
 > 
+> Note that attention here can mean any semantic relation between the given pair of words that is inferred from the training set. we let backprop decide what type of relations it will amplify.
+
+- The above architecture stacks the self attention blocks parallelly with different initializations for weights which allows the model to capture multiple relationships between the words
+- for a masked multi-head attention unit, we mask the upper triangular matrix of the attention filter with -infinity values such that during training, the output words cannot see the words ahead of them but only behind.
+- We add and normalize the position encoded input words to the output of the self attention layer to make it easier to train. This happens because the self attention layer can establish relationships among the input words without having to preserve the word embedding information
