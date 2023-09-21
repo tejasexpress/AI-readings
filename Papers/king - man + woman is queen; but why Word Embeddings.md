@@ -72,9 +72,9 @@ vector(”small”). Then, we search in the vector space for the word closest to
 - We’re going to train the neural network to do the following. Given a specific word in the middle of a sentence (the input word), look at the words nearby and pick one at random. When I say "nearby", there is actually a "window size" parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total).
 - For example, if you gave the trained network the input word “Soviet”, the output probabilities are going to be much higher for words like “Union” and “Russia” than for unrelated words like “watermelon” and “kangaroo”.
 - The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of (“Soviet”, “Union”) than it is of (“Soviet”, “Sasquatch”). When the training is finished, if you give it the word “Soviet” as input, then it will output a much higher probability for “Union” or “Russia” than it will for “Sasquatch”.
-![untitled 1.png](untitled%201.png)
+![Untitled 1.png](Untitled%201.png)
 
-![untitled 2.png](untitled%202.png)
+![Untitled 2.png](Untitled%202.png)
 
 A few things to point out:
 
