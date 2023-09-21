@@ -1,0 +1,5 @@
+| **Paper**                                                | **Author**                                                                                                   | **Link**                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| [[On the Origin of Deep Learning]]                       | Haohan Wang, Bhiksha Raj                                                                                     | https://arxiv.org/pdf/1702.07800.pdf                       |
+| [[king - man + woman is queen; but why Word Embeddings]] | Piotr Migdał, Kai Chen, Greg Corrado, Jeffrey Dean, Tomas Mikolov, CHRIS MOODY, Chris McCormick, Jay Alammar | https://p.migdal.pl/blog/2017/01/king-man-woman-queen-why/ |
+| [[Transformers zero to hero]]                            | CodeEmporium                                                                                                 | https://www.youtube.com/watch?v=rPFkX5fJdRY                |
