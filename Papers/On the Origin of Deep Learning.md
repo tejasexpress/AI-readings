@@ -41,7 +41,7 @@ However, in reality, many problems will arise if we keep increasing the layers. 
 
 ---
 
-The breakthrough ResNet introduces, which allows ResNet to be substantially deeper than previous networks, is called Residual Block. The idea behind a Residual Block is that some input of a certain layer (denoted as x) can be passed to the component two layers later either following the traditional path which involves convolutional layers and ReLU transform succession (we denote the result as f(x)), or going through an express way that directly passes x there. As a result, the input to the component two layers later is f(x) + x instead of what is typically seen as f(x).![[Pasted image 20230920184810.png]]
+The breakthrough ResNet introduces, which allows ResNet to be substantially deeper than previous networks, is called Residual Block. The idea behind a Residual Block is that some input of a certain layer (denoted as x) can be passed to the component two layers later either following the traditional path which involves convolutional layers and ReLU transform succession (we denote the result as f(x)), or going through an express way that directly passes x there. As a result, the input to the component two layers later is f(x) + x instead of what is typically seen as f(x).![Pasted image 20230920184810.png](Pasted%20image%2020230920184810.png)
 Another interesting perspective of ResNet is provided by (Veit et al., 2016). They showed that ResNet behaves like ensemble of shallow networks: the express way introduced allows ResNet to perform as a collection of independent networks, each network is significantly shallower than the integrated ResNet itself. This also explains why gradient can be passed through the ultra-deep architecture without being vanished
 
 In addition, the idea of Residual Block has been found in the actual visual cortex (In the ventral stream of the visual cortex, V4 can directly accept signals from primary visual cortex), although ResNet is not designed according to this in the first place.
@@ -63,7 +63,7 @@ In addition, the idea of Residual Block has been found in the actual visual cort
 
 RpropRprop was introduced by Riedmiller and Braun (1993). It is a unique method even studied
 back today as it does not fully utilize the information of gradient, but only considers the
-sign of it.![[Pasted image 20230920184741.png]]
+sign of it.![Pasted image 20230920184741.png](Pasted%20image%2020230920184741.png)
 **Dropout**
 
 Dropout was introduced in (Hinton et al., 2012; Srivastava et al., 2014). The technique soon got influential, not only because of its good performance but also because of its simplicity of implementation. The idea is very simple: randomly dropping out some of the units while training. More formally: on each training case, each hidden unit is randomly omitted from the network with a probability of p. As suggested by Hinton et al. (2012), Dropout can be seen as an efficient way to perform model averaging across a large number of different neural networks, where overfitting can be avoided with much less cost of computation.
