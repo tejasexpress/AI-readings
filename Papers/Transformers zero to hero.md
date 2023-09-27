@@ -54,4 +54,16 @@
 
 - The above architecture stacks the self attention blocks parallelly with different initializations for weights which allows the model to capture multiple relationships between the words
 - for a masked multi-head attention unit, we mask the upper triangular matrix of the attention filter with -infinity values such that during training, the output words cannot see the words ahead of them but only behind.
-- We add and normalize the position encoded input words to the output of the self attention layer to make it easier to train. This happens because the self attention layer can establish relationships among the input words without having to preserve the word embedding information
+- We add and normalize the position encoded input words to the output of the self attention layer to make it easier to train. This happens because the self attention layer can establish relationships among the input words without having to preserve the word embedding information (stronger positional encoding signal). These are called residual connections.
+# Decoder
+
+- In the decoder block, we pass in a start token and an end token, and for the output, we shift the words to the left by one i.e given the start token, we want to predict the first word of the output sentence that we passed, with the first word inputted, we want to predict the second word ( of the same sentence)
+- we also have two attention block
+	- one of this is <span style="color:#ffc000">masked</span> i.e the upper triangular matrix of the attention filter is set to 0, this means the the words can pay 0 attention to the words which come after it. This attention block finds sematic relations between each words and all the words coming before it and outputs words in the <span style="color:#ffc000">second language</span> with numerical embedding + positional encoding (same values as encoder)+ attention context
+	- the next attention block takes in the processed words from both the languages and tries to find which words from input languages have sematic relations with words from output languages
+		- We create a query vector for the \<SOS> token in the decoder and create keys for each word coming from the encoder and calculate similarities and run it through soft-max to find a distribution of what the decoder thinks will be the next word (after the \<SOS> Token) from this we make a value vector for each word coming from the encoder and multiply it with the corresponding soft-max probability for that word, and then add them to get the encoder-decoder attention values. Stack these parallelly
+		- add residual connections to this encoder-decoder attention unit, connect to the output from the decoder self attention unit, we do this so that the network doesn't need to remember then self attention and position encoding values for the decoder
+		- This value represents the encoder decoder attention value for the \<SOS> token i.e for that token in decoder, which word from the encoder should he pay the most attention to, to predict the next word coming after the \<SOS> Token (the word from the output language now also has some info from input language encoded within it)
+		- We pass this though a fully connected layer which inputs the value for \<SOS> token and outputs = vocabulary in decoder language. we pass it through a soft-max to predict the word most probable after the \<SOS> Token
+		- This decoder doesn't stop until it outputs an \<EOS> Token
+		- weights for queries, keys and values are different from self attention
